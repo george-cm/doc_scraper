@@ -371,7 +371,7 @@ class DocDumper:
         urls: list[str] = []
         try:
             async with AsyncUrlSeeder() as seeder:
-                cfg = SeedingConfig(source="cc+sitemap", extract_head=False, pattern="*")
+                cfg = SeedingConfig(source="sitemap", extract_head=False, pattern="*")
                 found = await seeder.urls(self.host, cfg)
                 urls = [normalize_url(u.get("url", "")) for u in found
                         if u.get("status") == "valid" and u.get("url")]
