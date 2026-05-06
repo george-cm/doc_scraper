@@ -1,0 +1,9 @@
+[project]
+name = "doc-scraper"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "crawl4ai>=0.8.6",
+    "lxml>=5.4.0",
+]
