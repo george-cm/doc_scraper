@@ -56,6 +56,17 @@ if "--no-unique" in sys.argv:
     UNIQUE_ON = False
     sys.argv.remove("--no-unique")
 
+CONCURRENCY = 4  # default: safe for background use without killing the machine
+if "--workers" in sys.argv:
+    idx = sys.argv.index("--workers")
+    try:
+        CONCURRENCY = int(sys.argv[idx + 1])
+        sys.argv.pop(idx + 1)
+        sys.argv.pop(idx)
+    except (IndexError, ValueError):
+        print("Usage: --workers N  (e.g. --workers 4)", file=sys.stderr)
+        sys.exit(2)
+
 try:
     if len(sys.argv) > 1:
         START_URL = sys.argv[1].strip()
@@ -65,12 +76,11 @@ except (EOFError, IndexError):
     START_URL = ""
 
 if not START_URL:
-    print("Usage: python doc_to_md.py [--test] <URL>", file=sys.stderr)
-    print("Example: python doc_to_md.py --test https://docs.example.com/page.html", file=sys.stderr)
+    print("Usage: python doc_to_md.py [--test] [--workers N] <URL>", file=sys.stderr)
+    print("Example: python doc_to_md.py --workers 4 https://docs.example.com/page.html", file=sys.stderr)
     sys.exit(2)
 
 OUTPUT_DIR = folder_name_from_url(START_URL)
-CONCURRENCY = 16
 PAGE_TIMEOUT_MS = 30000
 MIN_DUP_WORDS = 100
 
